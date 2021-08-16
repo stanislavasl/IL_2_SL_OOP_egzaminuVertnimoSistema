@@ -20,13 +20,18 @@ public class FileService {
     public List<Person> readFileAsList(String filename) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        File file = new File(filename);
-        List<Person> list = null;
-        try {
-            list = mapper.readValue(file, new TypeReference<>() {
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+        File file = createFile(filename);
+        List<Person> list = new ArrayList<>();
+        if (file.length() != 0) {
+           try {
+                list = mapper.readValue(file, new TypeReference<>() {
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        for(Person p: list) {
+            System.out.println(p);
         }
        return list;
     }
@@ -34,23 +39,17 @@ public class FileService {
 
     public String checkForId(FileService fs, String filename, String tempUserID) throws JsonProcessingException {
         List<Person> users = fs.readFileAsList(filename);
-        String res = "";
-        for (Person p : users) {
-            if (tempUserID.equals(p.getId())) {
-                res = p.getPassword();
-                break;
-            } else {
-                res = null;
+        String res = null;
+        if(users.size() != 0) {
+            for (Person p : users) {
+                if (tempUserID.equals(p.getId())) {
+                    res = p.getPassword();
+                    break;
+                }
             }
         }
         return res;
     }
-
-
-
-
-
-
 
     public File createFile(String filename) {
         File file = new File(filename);
@@ -68,7 +67,6 @@ public class FileService {
     public void writeUsersToFile(FileService fs, String filename, List<Person> users) {
         ObjectMapper mapper = new ObjectMapper();
         File file = fs.createFile(filename);
-//        File file = new File(filename);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
             mapper.writeValue(file, users);

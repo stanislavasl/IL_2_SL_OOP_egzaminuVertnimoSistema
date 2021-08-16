@@ -90,38 +90,25 @@ public class LoginService {
 
 
 
-
-
     private String getUniqueUserID(Scanner sc, String filename) {
         String userID = "";
         boolean searchResult = true;
-        fs.createFile(filename);
+//        fs.createFile(filename);
 
-//        do {
+        do {
         System.out.println("Please enter user ID");
         String tempUserID = sc.nextLine();
-//        try {
-//            if (fs.checkForId(fs, filename, tempUserID) == null) {
+        try {
+            if (fs.checkForId(fs, filename, tempUserID) == null) {
                 userID = tempUserID;
-//                searchResult = false;
-//            } else {
-//                System.out.println("This name exists. Please insert another one or login in.");
-//            }
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        } while (searchResult);
-
-//
-//
-//
-//        String userID;
-//        String text = "Please insert userID";
-//        do {
-//            System.out.println(text);
-//            userID = sc.nextLine();
-//            text = "This name exist please insert another one";
-//        } while (users.get(userID) != null);
+                searchResult = false;
+            } else {
+                System.out.println("This name exists. Please insert another one or login in.");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        } while (searchResult);
 
         return userID;
     }
