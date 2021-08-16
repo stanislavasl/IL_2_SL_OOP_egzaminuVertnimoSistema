@@ -11,9 +11,15 @@ import java.util.Scanner;
 
 public class LoginService {
 
+    private Scanner sc;
+
+    public LoginService(Scanner sc) {
+        this.sc = sc;
+    }
+
     FileService fs = new FileService();
 
-    public void registration(Scanner sc, String role) {
+    public void registration(String role, MenuService menu) {
         String filename = "src/users/" + role + ".json";
         System.out.println("*** User Registration ***");
         String userID = getUniqueUserID(sc, filename);
@@ -22,31 +28,21 @@ public class LoginService {
         String name = sc.nextLine();
         System.out.println("** Insert your surname ***");
         String surname = sc.nextLine();
-        if(role.equals("teacher")){
             try {
-                List<Person> teachers = fs.readFileAsList(filename);
-                teachers.add(new Teacher(userID, password, name, surname, role));
-                fs.writeUsersToFile(fs, filename, teachers);
+                List<Person> persons = fs.readFileAsList(filename);
+                persons.add(new Person (userID, password, name, surname, role));
+                fs.writeUsersToFile(fs, filename, persons);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-        }
-        if(role.equals("student")){
-            try {
-                List<Person> students = fs.readFileAsList(filename);
-                students.add(new Student(userID, password, name, surname, role));
-                fs.writeUsersToFile(fs, filename, students);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        }
         System.out.println("User successfully registered");
+        menu.workMenu(role, menu);
    }
 
 
 
 
-    public void login(Scanner sc, String role) {
+    public void login(String role, MenuService menu) {
         String filename = "src/users/" + role + ".json";
         System.out.println("*** User login ***");
         System.out.println("Insert username");
@@ -64,6 +60,7 @@ public class LoginService {
 
         if (encodedPassword != null && encodedPassword.equals(DigestUtils.sha256Hex(password))) {
             System.out.println("User login successfully");
+            menu.workMenu(role, menu);
         } else {
             System.out.println("Login error, please check credentials or create account");
         }
@@ -93,7 +90,6 @@ public class LoginService {
     private String getUniqueUserID(Scanner sc, String filename) {
         String userID = "";
         boolean searchResult = true;
-//        fs.createFile(filename);
 
         do {
         System.out.println("Please enter user ID");

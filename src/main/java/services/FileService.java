@@ -30,9 +30,6 @@ public class FileService {
                 e.printStackTrace();
             }
         }
-        for(Person p: list) {
-            System.out.println(p);
-        }
        return list;
     }
 
@@ -76,7 +73,16 @@ public class FileService {
     }
 
 
-
+    public void writeExamsToFile(FileService fs, String filename, List<Exam> users) {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = fs.createFile(filename);
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        try {
+            mapper.writeValue(file, users);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

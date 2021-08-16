@@ -1,19 +1,26 @@
 package data;
 
+import java.time.LocalDateTime;
+
 public class Exam {
 
-    private final int id;
+    private final String id;
     private String title;
     private String type;
+    private String dateAndTime;
 
+    public Exam() {
+        id = null;
+    }
 
-    public Exam(int id, String title, String type) {
+    public Exam(String id, String title, String type, String dateAndTime) {
         this.id = id;
         this.title = title;
         this.type = type;
+        this.dateAndTime = dateAndTime;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -31,5 +38,11 @@ public class Exam {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDateAndTime() {return dateAndTime; }
+
+    public void setDateAndTime(String dateAndTime) {
+        this.dateAndTime = dateAndTime;
     }
 }
