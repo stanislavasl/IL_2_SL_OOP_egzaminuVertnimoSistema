@@ -1,22 +1,22 @@
 package data;
 
 public class Answers {
-    private int question;
+    private String question;
     private String answer;
 
     public Answers() {
     }
 
-    public Answers(int question, String answer) {
+    public Answers(String question, String answer) {
         this.question = question;
         this.answer = answer;
     }
 
-    public int getQuestion() {
+    public String getQuestion() {
         return question;
     }
 
-    public void setQuestion(int question) {
+    public void setQuestion(String question) {
         this.question = question;
     }
 

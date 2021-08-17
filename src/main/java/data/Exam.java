@@ -1,48 +1,32 @@
 package data;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class Exam {
-
-    private final String id;
-    private String title;
-    private String type;
-    private String dateAndTime;
+    private ExamInfo exam;
+    private List<Answers> answers;
 
     public Exam() {
-        id = null;
     }
 
-    public Exam(String id, String title, String type, String dateAndTime) {
-        this.id = id;
-        this.title = title;
-        this.type = type;
-        this.dateAndTime = dateAndTime;
+    public Exam(ExamInfo exam, List<Answers> answers) {
+        this.exam = exam;
+        this.answers = answers;
     }
 
-    public String getId() {
-        return id;
+    public ExamInfo getExam() {
+        return exam;
     }
 
-    public String getTitle() {
-        return title;
+    public void setExam(ExamInfo exam) {
+        this.exam = exam;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public List<Answers> getAnswers() {
+        return answers;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getDateAndTime() {return dateAndTime; }
-
-    public void setDateAndTime(String dateAndTime) {
-        this.dateAndTime = dateAndTime;
+    public void setAnswers(List<Answers> answers) {
+        this.answers = answers;
     }
 }

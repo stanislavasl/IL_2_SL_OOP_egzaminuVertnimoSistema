@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 public class FileService {
 
@@ -73,12 +72,12 @@ public class FileService {
     }
 
 
-    public void writeExamsToFile(FileService fs, String filename, List<Exam> users) {
+    public void writeExamsToFile(FileService fs, String filename, Exam e1) {
         ObjectMapper mapper = new ObjectMapper();
         File file = fs.createFile(filename);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
-            mapper.writeValue(file, users);
+            mapper.writeValue(file, e1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,7 +92,7 @@ public class FileService {
 
 
 
-    private void writeToFile(File file, Student student, Exam exam, List<Answers> answersList) throws IOException {
+    private void writeToFile(File file, Student student, ExamInfo exam, List<Answers> answersList) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         HashMap<String, Object> examData = new HashMap<>();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
@@ -105,16 +104,6 @@ public class FileService {
 
     }
 
-    private List<Answers> fillInTheAnswers(Scanner sc) {
-        Answers answers = new Answers();
-        List<Answers> answersList = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("Klausimas Nr. " + i + ":");
-            System.out.println("Atsakymas: ");
-            answersList.add(new Answers(i, sc.nextLine()));
-        }
-        return answersList;
-    }
 
 
 

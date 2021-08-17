@@ -1,3 +1,4 @@
+import services.ExamService;
 import services.MenuService;
 
 import java.io.IOException;
@@ -10,6 +11,8 @@ public class Main {
 
         menu.userRole(menu);
 
+//        ExamService exam = new ExamService(new Scanner(System.in));
+//        exam.insertExam();
 
     }
 }
