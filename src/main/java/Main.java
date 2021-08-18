@@ -1,4 +1,3 @@
-import services.ExamService;
 import services.MenuService;
 
 import java.io.IOException;
@@ -10,9 +9,18 @@ public class Main {
         MenuService menu = new MenuService(new Scanner(System.in));
 
         menu.userRole(menu);
+//
+//        ExamService exam = new ExamService(new Scanner(System.in), new FileService());
+//        exam.passingTheExam();
 
-//        ExamService exam = new ExamService(new Scanner(System.in));
-//        exam.insertExam();
+//        FileService fs = new FileService();
+//        fs.readExamsToFile();
+
+//        LoginService ls = new LoginService(new Scanner(System.in));
+//        ls.readUsersFromFile();
+
+
+
 
     }
 }

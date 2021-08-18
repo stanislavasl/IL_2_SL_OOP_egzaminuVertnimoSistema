@@ -1,15 +1,16 @@
 package data;
 
 import java.util.List;
+import java.util.Map;
 
 public class Exam {
     private ExamInfo exam;
-    private List<Answers> answers;
+    private Map<String, String> answers;
 
     public Exam() {
     }
 
-    public Exam(ExamInfo exam, List<Answers> answers) {
+    public Exam(ExamInfo exam, Map<String, String> answers) {
         this.exam = exam;
         this.answers = answers;
     }
@@ -22,11 +23,11 @@ public class Exam {
         this.exam = exam;
     }
 
-    public List<Answers> getAnswers() {
+    public Map<String, String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<Answers> answers) {
+    public void setAnswers(Map<String, String> answers) {
         this.answers = answers;
     }
 }

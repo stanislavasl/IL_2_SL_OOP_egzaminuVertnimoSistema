@@ -11,8 +11,6 @@ public class MenuService {
     }
 
     public void userRole(MenuService menu) {
-//        Scanner sc = new Scanner(System.in);
-
         boolean isLoading = true;
         while (isLoading) {
             System.out.println(" ___________________________________");
@@ -24,28 +22,13 @@ public class MenuService {
 
             String select = sc.nextLine();
             switch (select) {
-                case "1": {
-                    String role = "teacher";
-                    menu.loginMenu(role, menu);
-                    break;
-                }
-                case "2": {
-                    String role = "student";
-                    menu.loginMenu(role, menu);
-                    break;
-                }
-                case "3": {
-                    isLoading = false;
-                    break;
-                }
-                default: {
-                    System.out.println("Please select menu item");
-                    break;
-                }
+                case "1" -> menu.loginMenu("teacher", menu);
+                case "2" -> menu.loginMenu("student", menu);
+                case "3" -> isLoading = false;
+                default ->  System.out.println("Please select menu item");
             }
         }
     }
-
 
     private void loginMenu(String role, MenuService menu) {
         LoginService signIn = new LoginService(new Scanner(System.in));
@@ -60,41 +43,37 @@ public class MenuService {
 
             String select = sc.nextLine();
             switch (select) {
-                case "1": {
-                    signIn.registration(role, menu);
-                    break;
-                }
-                case "2": {
-                    signIn.login(role, menu);
-                    break;
-                }
-                case "3": {
-                    isLoading = false;
-                    break;
-                }
-                default: {
-                    System.out.println("Please select menu item");
-                    break;
-                }
+                case "1" -> signIn.registration(role, menu);
+                case "2" -> signIn.login(role, menu);
+                case "3" -> isLoading = false;
+                default -> System.out.println("Please select menu item");
             }
         }
     }
 
+    protected void studentWorkMenu(){
+        ExamPassingService exam = new ExamPassingService(new Scanner(System.in), new FileService());
+        boolean isLoading = true;
+        while (isLoading) {
+            System.out.println(" ___________________________________");
+            System.out.println("|*  Welcome to student work menu   *|");
+            System.out.println("| 1 - Passing the exam              |");
+            System.out.println("| 2 - Supplement existing exams     |");
+            System.out.println("| 3 - Exit                          |");
+            System.out.println("|___________________________________|");
 
-    public void workMenu(String role, MenuService menu){
-        if(role.equals("teacher")){
-            menu.teacherWorkMenu();
+            String select = sc.nextLine();
+            switch (select) {
+                case "1" -> exam.passingTheExam();
+                case "2" -> System.out.println("under construction");
+                case "3" -> isLoading = false;
+                default ->  System.out.println("Please select menu item");
+            }
         }
-//        if(role.equals("student")){
-//            menu.studentWorkMenu();
-//        }
-
     }
 
-
-
-   private void teacherWorkMenu() {
-        ExamService exam = new ExamService(new Scanner(System.in));
+   protected void teacherWorkMenu() {
+        ExamInsertService exam = new ExamInsertService(new Scanner(System.in), new FileService());
         boolean isLoading = true;
         while (isLoading) {
             System.out.println(" ___________________________________");
@@ -106,27 +85,11 @@ public class MenuService {
 
             String select = sc.nextLine();
             switch (select) {
-                case "1": {
-                    exam.insertExam();
-                    break;
-                }
-                case "2": {
-
-                    break;
-                }
-                case "3": {
-                    isLoading = false;
-                    break;
-                }
-                default: {
-                    System.out.println("Please select menu item");
-                    break;
-                }
+                case "1" -> exam.insertExam();
+                case "2" -> System.out.println("under construction");
+                case "3" -> isLoading = false;
+                default -> System.out.println("Please select menu item");
             }
         }
     }
-
-
-
-
 }
