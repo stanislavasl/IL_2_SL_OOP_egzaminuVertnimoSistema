@@ -48,10 +48,7 @@ public class ExamPassingService {
                 grade += valueOfOneAnswer;
             }
         }
-        /* irasyti teisingu formatu studento atsakymus*/
         writeExamResults(studentAnswersFilename, answers, userId, examId, correctAnswersFilename);
-        fs.writeExamDataToFile(studentAnswersFilename, answers);
-
     }
 
     private Map<String, String> getListOfExams() {
