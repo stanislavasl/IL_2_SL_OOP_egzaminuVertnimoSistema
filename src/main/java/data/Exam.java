@@ -1,26 +1,25 @@
 package data;
 
-import java.util.List;
 import java.util.Map;
 
 public class Exam {
-    private ExamInfo exam;
+    private ExamInfo examInfo;
     private Map<String, String> answers;
 
     public Exam() {
     }
 
-    public Exam(ExamInfo exam, Map<String, String> answers) {
-        this.exam = exam;
+    public Exam(ExamInfo examInfo, Map<String, String> answers) {
+        this.examInfo = examInfo;
         this.answers = answers;
     }
 
-    public ExamInfo getExam() {
-        return exam;
+   public ExamInfo getExamInfo() {
+        return examInfo;
     }
 
-    public void setExam(ExamInfo exam) {
-        this.exam = exam;
+    public void setExamInfo(ExamInfo exam) {
+        this.examInfo = exam;
     }
 
     public Map<String, String> getAnswers() {

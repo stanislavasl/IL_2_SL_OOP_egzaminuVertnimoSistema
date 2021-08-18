@@ -1,20 +1,20 @@
 package services;
 
-import data.Exam;
+import data.*;
 
 import java.util.*;
 
 public class ExamPassingService {
 
-    private Scanner sc;
-    private FileService fs;
+    private final Scanner sc;
+    private final FileService fs;
 
     public ExamPassingService(Scanner sc, FileService fs) {
         this.sc = sc;
         this.fs = fs;
     }
 
-    public void passingTheExam() {
+    public void passingTheExam(String userId) {
         Map<String, String> listOfExams = getListOfExams();
 
         System.out.println();
@@ -22,13 +22,15 @@ public class ExamPassingService {
         String examId = sc.nextLine();
         System.out.println(examId);
 
-        fillTheAnswers(listOfExams.get(examId), examId);
+        fillTheAnswers(listOfExams.get(examId), examId, userId);
+
+
     }
 
-    private void fillTheAnswers(String examShortInfo, String examId) {
-        String questionsFilename = "src/files/questions/" + examId + "_" + examShortInfo + ".json";
-        String studentAnswersFilename = "src/files/student_answers/" + examId + "_" + examShortInfo + ".json";
-        String correctAnswersFilename = "src/files/correct_answers/" + examId + "_" + examShortInfo + ".json";
+    private void fillTheAnswers(String examShortInfo, String examId, String userId) {
+        String questionsFilename = Path.QUESTIONS.getCataloque() + examId + "_" + examShortInfo + ".json";
+        String studentAnswersFilename = Path.STUDENT_ANSWERS.getCataloque() + examId + "_" + examShortInfo + ".json";
+        String correctAnswersFilename = Path.CORRECT_ANSWERS.getCataloque() + examId + "_" + examShortInfo + ".json";
 
         Map<String, String> answers = new HashMap<>();
         Map<String, String> questions = fs.readExamDataFromFile(questionsFilename);
@@ -46,12 +48,15 @@ public class ExamPassingService {
                 grade += valueOfOneAnswer;
             }
         }
+        /* irasyti teisingu formatu studento atsakymus*/
+        writeExamResults(studentAnswersFilename, answers, userId, examId, correctAnswersFilename);
         fs.writeExamDataToFile(studentAnswersFilename, answers);
-        System.out.println(grade);
+
     }
 
     private Map<String, String> getListOfExams() {
-        Map<String, String> listOfExams = fs.readExamsListFromFile();
+        String filename = Path.CORRECT_ANSWERS.getCataloque() + "listOfExams.json";
+        Map<String, String> listOfExams = fs.readExamDataFromFile(filename);
         Set set = listOfExams.entrySet();
         Iterator iterator = set.iterator();
         while(iterator.hasNext()) {
@@ -61,6 +66,19 @@ public class ExamPassingService {
             System.out.println(mentry.getValue());
         }
         return listOfExams;
+    }
+
+    private void writeExamResults(String studentAnswersFilename, Map<String, String> answers, String userId, String examId, String correctAnswersFilename) {
+        Map<String, Person> students = fs.readUserFromFile(Path.USERS.getCataloque() + "student.json");
+        Person st = students.get(userId);
+        Exam notConsideredExam = fs.readExamsFromFile(correctAnswersFilename);
+        ExamInfo ex = notConsideredExam.getExamInfo();
+        Answers examAnswers = new Answers(st, ex, answers);
+        fs.writeAnswersToFile(studentAnswersFilename, examAnswers);
+
+
+
+
     }
 
 }

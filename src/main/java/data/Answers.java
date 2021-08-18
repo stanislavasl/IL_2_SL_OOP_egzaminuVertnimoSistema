@@ -1,30 +1,42 @@
 package data;
 
+import java.util.Map;
+
 public class Answers {
-    private String question;
-    private String answer;
+    private Person person;
+    private ExamInfo examInfo;
+    private Map<String, String> answers;
 
     public Answers() {
     }
 
-    public Answers(String question, String answer) {
-        this.question = question;
-        this.answer = answer;
+    public Answers(Person person, ExamInfo examInfo, Map<String, String> answers) {
+        this.person = person;
+        this.examInfo = examInfo;
+        this.answers = answers;
     }
 
-    public String getQuestion() {
-        return question;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
-    public String getAnswer() {
-        return answer;
+    public ExamInfo getExamInfo() {
+        return examInfo;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setExamInfo(ExamInfo examInfo) {
+        this.examInfo = examInfo;
+    }
+
+    public Map<String, String> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Map<String, String> answers) {
+        this.answers = answers;
     }
 }

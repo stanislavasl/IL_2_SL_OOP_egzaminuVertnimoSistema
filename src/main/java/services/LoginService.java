@@ -1,7 +1,6 @@
 package services;
 
 import data.Person;
-import data.Teacher;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Map;
@@ -33,12 +32,8 @@ public class LoginService {
 
         System.out.println("User successfully registered");
         switch(role) {
-            case "teacher": {
-                menu.teacherWorkMenu();
-                break;}
-            case "student": {
-                menu.studentWorkMenu();
-                break;}
+            case "teacher" -> menu.teacherWorkMenu(userID);
+            case "student" -> menu.studentWorkMenu(userID);
         }
     }
 
@@ -55,12 +50,8 @@ public class LoginService {
         if(encodedPassword != null && encodedPassword.equals(DigestUtils.sha256Hex(password))){
             System.out.println("User login successfully");
             switch(role) {
-                case "teacher": {
-                    menu.teacherWorkMenu();
-                    break;}
-                case "student": {
-                    menu.studentWorkMenu();
-                    break;}
+                case "teacher" -> menu.teacherWorkMenu(userID);
+                case "student" -> menu.studentWorkMenu(userID);
             }
         }else {
             System.out.println("Login error, please check credentials or create account");
