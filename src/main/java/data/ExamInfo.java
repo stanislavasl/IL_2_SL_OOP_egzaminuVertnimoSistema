@@ -45,4 +45,14 @@ public class ExamInfo {
     public void setDateAndTime(String dateAndTime) {
         this.dateAndTime = dateAndTime;
     }
+
+    @Override
+    public String toString() {
+        return " ExamInfo{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", dateAndTime='" + dateAndTime + '\'' +
+                '}';
+    }
 }

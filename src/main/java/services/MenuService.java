@@ -1,5 +1,7 @@
 package services;
 
+import data.Path;
+
 import java.util.Scanner;
 
 public class MenuService {
@@ -25,13 +27,15 @@ public class MenuService {
                 case "1" -> menu.loginMenu("teacher", menu);
                 case "2" -> menu.loginMenu("student", menu);
                 case "3" -> isLoading = false;
-                default ->  System.out.println("Please select menu item");
+                default -> System.out.println("Please select menu item");
             }
         }
     }
 
     private void loginMenu(String role, MenuService menu) {
         LoginService signIn = new LoginService(new Scanner(System.in));
+        String filename = "";
+        String userID = "";
         boolean isLoading = true;
         while (isLoading) {
             System.out.println(" ___________________________________");
@@ -47,13 +51,13 @@ public class MenuService {
                 case "1" -> signIn.registration(role, menu);
                 case "2" -> signIn.login(role, menu);
                 case "3" -> isLoading = false;
-                case "4" ->  System.exit(0);
+                case "4" -> System.exit(0);
                 default -> System.out.println("Please select menu item");
             }
         }
     }
 
-    protected void studentWorkMenu(String userId){
+    protected void studentWorkMenu(String userId) {
         ExamPassingService exam = new ExamPassingService(new Scanner(System.in), new FileService());
         boolean isLoading = true;
         while (isLoading) {
@@ -70,13 +74,13 @@ public class MenuService {
                 case "1" -> exam.passingTheExam(userId);
                 case "2" -> System.out.println("under construction");
                 case "3" -> isLoading = false;
-                case "4" ->  System.exit(0);
-                default ->  System.out.println("Please select menu item");
+                case "4" -> System.exit(0);
+                default -> System.out.println("Please select menu item");
             }
         }
     }
 
-   protected void teacherWorkMenu(String userId) {
+    protected void teacherWorkMenu(String userId) {
         ExamInsertService exam = new ExamInsertService(new Scanner(System.in), new FileService());
         boolean isLoading = true;
         while (isLoading) {
@@ -93,7 +97,7 @@ public class MenuService {
                 case "1" -> exam.insertExam(userId);
                 case "2" -> System.out.println("under construction");
                 case "3" -> isLoading = false;
-                case "4" ->  System.exit(0);
+                case "4" -> System.exit(0);
                 default -> System.out.println("Please select menu item");
             }
         }

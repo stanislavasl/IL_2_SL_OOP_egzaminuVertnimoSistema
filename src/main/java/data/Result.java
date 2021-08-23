@@ -2,15 +2,14 @@ package data;
 
 import java.util.Map;
 
-public class Answers {
+public class Result {
     private Person person;
     private ExamInfo examInfo;
     private Map<String, String> answers;
 
-    public Answers() {
-    }
+    public Result() {}
 
-    public Answers(Person person, ExamInfo examInfo, Map<String, String> answers) {
+    public Result(Person person, ExamInfo examInfo, Map<String, String> answers) {
         this.person = person;
         this.examInfo = examInfo;
         this.answers = answers;
@@ -39,5 +38,4 @@ public class Answers {
     public void setAnswers(Map<String, String> answers) {
         this.answers = answers;
     }
-
 }

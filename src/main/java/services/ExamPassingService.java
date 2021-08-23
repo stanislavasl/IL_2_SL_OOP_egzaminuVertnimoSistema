@@ -2,6 +2,7 @@ package services;
 
 import data.*;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class ExamPassingService {
@@ -15,28 +16,28 @@ public class ExamPassingService {
     }
 
     public void passingTheExam(String userId) {
-        Map<String, String> listOfExams = getListOfExams();
-
+        List<ExamInfo> listOfExams = getListOfExams();
         System.out.println();
         System.out.println("Please select exam from list and enter exam ID:");
         String examId = sc.nextLine();
-        System.out.println(examId);
-
-        fillTheAnswers(listOfExams.get(examId), examId, userId);
-
-
+        listOfExams.forEach(e -> {if(e.getId().equals(examId)){
+            fillTheAnswers(e.getTitle(), e.getType(), examId, userId);
+        }});
     }
 
-    private void fillTheAnswers(String examShortInfo, String examId, String userId) {
-        String questionsFilename = Path.QUESTIONS.getCataloque() + examId + "_" + examShortInfo + ".json";
-        String studentAnswersFilename = Path.STUDENT_ANSWERS.getCataloque() + examId + "_" + examShortInfo + ".json";
-        String correctAnswersFilename = Path.CORRECT_ANSWERS.getCataloque() + examId + "_" + examShortInfo + ".json";
+    private void fillTheAnswers(String examTitle, String examType, String examId, String userId) {
+        String questionsFilename = fs.createFilename("qs", examId, examTitle, examType, userId);
+        String studentAnswersFilename = fs.createFilename("sa", examId, examTitle, examType, userId);
+        String correctAnswersFilename = fs.createFilename("ca", examId, examTitle, examType, userId);
 
+        Person student = fs.readUserFromFile(Path.STUDENTS.getCataloque()).get(userId);
         Map<String, String> answers = new HashMap<>();
-        Map<String, String> questions = fs.readExamDataFromFile(questionsFilename);
+        Map<String, String> questions = new HashMap<>();
+        questions = fs.readData(questionsFilename, questions);
         Exam exam = fs.readExamsFromFile(correctAnswersFilename);
 
-        float valueOfOneAnswer = (float) 10 / questions.size();
+        DecimalFormat df1 = new DecimalFormat("#.##");
+        float valueOfOneAnswer = Float.parseFloat(df1.format((float) 10 / questions.size()));
         float grade = 0;
 
         for (int i = 1; i <= questions.size(); i++) {
@@ -48,34 +49,32 @@ public class ExamPassingService {
                 grade += valueOfOneAnswer;
             }
         }
-        writeExamResults(studentAnswersFilename, answers, userId, examId, correctAnswersFilename);
+
+        Result result = new Result(student, exam.getExamInfo(), answers);
+        fs.writeData(studentAnswersFilename, result);
+
+        List<ShortResultsInfo> resultsList = new ArrayList<>();
+        List<ShortExamResults> exams = fs.readAllResultsFromFile(Path.LITS_OF_ALL_RESULTS.getCataloque());
+        for (ShortExamResults e : exams) {
+            if (e.getExamId().equals(examId)){
+                resultsList = e.getStudentsResults();
+            }
+        }
+        ShortResultsInfo shortResultsInfo = new ShortResultsInfo(student.getId(), student.getName(), student.getSurname(), grade);
+        resultsList.add(shortResultsInfo);
+        ShortExamResults shortExamResults = new ShortExamResults(examId, examTitle, resultsList);
+        exams.add(shortExamResults);
+        fs.writeData(Path.LITS_OF_ALL_RESULTS.getCataloque(), exams);
+
+
     }
 
-    private Map<String, String> getListOfExams() {
-        String filename = Path.CORRECT_ANSWERS.getCataloque() + "listOfExams.json";
-        Map<String, String> listOfExams = fs.readExamDataFromFile(filename);
-        Set set = listOfExams.entrySet();
-        Iterator iterator = set.iterator();
-        while(iterator.hasNext()) {
-            Map.Entry mentry = (Map.Entry)iterator.next();
-            System.out.println("List of exams");
-            System.out.print("Exam unique ID: "+ mentry.getKey() + "   |    Exam title: ");
-            System.out.println(mentry.getValue());
-        }
+    public List<ExamInfo> getListOfExams() {
+        String filename = Path.LIST_OF_EXAMS.getCataloque();
+        List<ExamInfo> listOfExams = fs.readExamDataFromFile(filename);
+        listOfExams.forEach(e -> System.out.println("Exam ID: " + e.getId() + "  |  Exam type: " + e.getType() + "  |  Exam title: " + e.getTitle()));
         return listOfExams;
     }
 
-    private void writeExamResults(String studentAnswersFilename, Map<String, String> answers, String userId, String examId, String correctAnswersFilename) {
-        Map<String, Person> students = fs.readUserFromFile(Path.USERS.getCataloque() + "student.json");
-        Person st = students.get(userId);
-        Exam notConsideredExam = fs.readExamsFromFile(correctAnswersFilename);
-        ExamInfo ex = notConsideredExam.getExamInfo();
-        Answers examAnswers = new Answers(st, ex, answers);
-        fs.writeAnswersToFile(studentAnswersFilename, examAnswers);
-
-
-
-
-    }
 
 }

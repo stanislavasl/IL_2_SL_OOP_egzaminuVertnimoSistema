@@ -8,7 +8,7 @@ public class Student extends Person {
     }
 
     public Student(String id, String password, String name, String surname, String role) {
-        super(id, password, name, surname, role);
+        super(id, password, name, surname);
     }
 
 

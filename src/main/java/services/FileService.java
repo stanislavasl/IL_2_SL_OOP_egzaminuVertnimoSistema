@@ -5,13 +5,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import data.*;
 
-
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FileService {
+
+    public String createFilename(String appendix, String examId, String title, String type, String studentId) {
+        String filename = "";
+        switch (appendix) {
+            case "ca" -> filename = Path.CORRECT_ANSWERS.getCataloque() + "_" + examId + "_" + type + "_" + title + ".json";
+            case "qs" -> filename = Path.QUESTIONS.getCataloque() + "_" + examId + "_" + type + "_" + title + ".json";
+            case "sa" -> filename = Path.STUDENT_ANSWERS.getCataloque() + "_" + examId + "_" + type + "_" + title + studentId +".json";
+            case "rs" -> filename = Path.RESULTS.getCataloque() + "_" + examId + "_" + type + "_" + title + studentId +".json";
+        }
+//        File file = createFile(filename);
+        return filename;
+    }
 
     public File createFile(String filename) {
         File file = new File(filename);
@@ -25,16 +38,6 @@ public class FileService {
         return file;
     }
 
-    public void writeExamsToFile(String filename, Exam exam) {
-        File file = createFile(filename);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        try {
-            mapper.writeValue(file, exam);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public Exam readExamsFromFile(String filename) {
         File file = createFile(filename);
         Exam exam = new Exam();
@@ -51,31 +54,20 @@ public class FileService {
         return exam;
     }
 
-    public void writeExamDataToFile(String filename, Map<String, String> list) {
-        File file = createFile(filename);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        try {
-            mapper.writeValue(file, list);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Map<String, String> readExamDataFromFile(String filename) {
-        Map<String, String> dataHashMap = new HashMap<>();
+    public List<ExamInfo> readExamDataFromFile(String filename) {
+        List<ExamInfo> dataList = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         File file = createFile(filename);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         if (file.length() != 0) {
             try {
-                dataHashMap = mapper.readValue(file, new TypeReference<>() {
+                dataList = mapper.readValue(file, new TypeReference<>() {
                 });
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return dataHashMap;
+        return dataList;
     }
 
     public Map<String, Person> readUserFromFile(String filename) {
@@ -94,23 +86,42 @@ public class FileService {
         return usersHashMap;
     }
 
-    public void writeUserToFile(String filename, Map<String, Person> users) {
+    public List<ShortExamResults> readAllResultsFromFile(String filename) {
+        List<ShortExamResults> list = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         File file = createFile(filename);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        try {
-            mapper.writeValue(file, users);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (file.length() != 0) {
+            try {
+                list = mapper.readValue(file, new TypeReference<>() {
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        return list;
     }
 
-    public void writeAnswersToFile(String filename, Answers answers) {
+    public <T> T readData(String filename, T t) {
+        File file = createFile(filename);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        if (file.length() != 0) {
+            try {
+               t = mapper.readValue(file, new TypeReference<>() {});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return t;
+    }
+
+    public <T> void writeData(String filename, T t) {
         File file = createFile(filename);
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
-            mapper.writeValue(file, answers);
+            mapper.writeValue(file, t);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -11,12 +11,11 @@ public class Person {
         id = null;
     }
     
-    public Person(String id, String password, String name, String surname, String role) {
+    public Person(String id, String password, String name, String surname) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.surname = surname;
-        this.role = role;
     }
 
     public String getId() {
@@ -47,16 +46,13 @@ public class Person {
         this.surname = surname;
     }
 
-    public String getRole() {
-        return role;
-    }
+
 
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(id);
         sb.append("_")
-                .append(role)
                 .append(name)
                 .append("_")
                 .append(surname);

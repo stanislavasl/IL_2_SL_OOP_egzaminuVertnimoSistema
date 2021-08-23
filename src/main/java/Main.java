@@ -1,4 +1,3 @@
-import data.Path;
 import services.MenuService;
 
 import java.io.IOException;
@@ -10,5 +9,7 @@ public class Main {
         MenuService menu = new MenuService(new Scanner(System.in));
 
         menu.userRole(menu);
+
+
     }
 }

@@ -29,4 +29,13 @@ public class Exam {
     public void setAnswers(Map<String, String> answers) {
         this.answers = answers;
     }
+
+
+    @Override
+    public String toString() {
+        return "Exam{" +
+                "examInfo=" + examInfo.toString() +
+                ", answers=" + answers +
+                '}';
+    }
 }

@@ -19,36 +19,40 @@ public class ExamInsertService {
     }
 
     public void insertExam(String userId) {
-        /* Unique exam ID*/
         String newExamId = getUniqueExamId();
-
-        /* Basic info about exam*/
         ExamInfo examInfo = infoAboutNewExam(newExamId);
+        String listOfExamsFilename = Path.LIST_OF_EXAMS.getCataloque();
 
-        /* Write short info about the exam in the exams list for future selection*/
-        Map<String, String> listOfExams = new HashMap<>();
-        listOfExams.put(examInfo.getId(), examInfo.getType() + "_" + examInfo.getTitle());
-        String listOfExamsFilename = Path.CORRECT_ANSWERS.getCataloque() + "listOfExams.json";
-        fs.writeExamDataToFile(listOfExamsFilename, listOfExams);
+        List<ExamInfo> listOfExams = fs.readExamDataFromFile(listOfExamsFilename);
+        listOfExams.add(examInfo);
+        fs.writeData(listOfExamsFilename, listOfExams);
 
-        /* Write questions and correct answers to json.files */
-        String answersfilename = Path.CORRECT_ANSWERS.getCataloque() + examInfo.getId() + "_" + examInfo.getType() + "_" + examInfo.getTitle() + ".json";
-        String questionsfilename = Path.QUESTIONS.getCataloque() + examInfo.getId() + "_" + examInfo.getType() +"_" + examInfo.getTitle() + ".json";
-        Map<String, String> examCorrectAnswers = examQuestionsAndCorrectAnswers(questionsfilename);
+
+        String answersFilename = fs.createFilename("ca", examInfo.getId(),  examInfo.getTitle(), examInfo.getType(), null);
+        String questionsFilename = fs.createFilename("qs", examInfo.getId(),  examInfo.getTitle(),examInfo.getType(), null);
+        Map<String, String> examCorrectAnswers = examQuestionsAndCorrectAnswers(questionsFilename);
+
         Exam exam = new Exam(examInfo, examCorrectAnswers);
-        fs.writeExamsToFile(answersfilename, exam);
+        fs.writeData(answersFilename, exam);
     }
 
 
     private String getUniqueExamId() {
-        String filename = Path.CORRECT_ANSWERS.getCataloque() +"listOfExams.json";
+        String filename = Path.LIST_OF_EXAMS.getCataloque();
         String newExamId;
+        boolean tag = true;
+        List <ExamInfo> list = fs.readExamDataFromFile(filename);
         String text = "Please insert new exam ID";
         do {
             System.out.println(text);
             newExamId = sc.nextLine();
+            for(ExamInfo e : list){
+                if (!e.getId().equals(newExamId)){
+                    tag = false;
+                }
+            }
             text = "This ID exist please insert another one";
-        } while (fs.readExamDataFromFile(filename).get(newExamId) != null);
+        } while (tag);
         return newExamId;
     }
 
@@ -58,7 +62,7 @@ public class ExamInsertService {
         System.out.println("Please insert exam type");
         String examType = sc.nextLine();
         LocalDateTime dateAndTime = LocalDateTime.now();
-        String dt = dateAndTime.format(DateTimeFormatter.ISO_DATE_TIME);
+        String dt = dateAndTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return new ExamInfo(newExamId, examTitle, examType, dt);
     }
 
@@ -76,7 +80,7 @@ public class ExamInsertService {
             String answer = sc.nextLine();
             answers.put(Integer.toString(i), answer);
         }
-        fs.writeExamDataToFile(filename, questions);
+        fs.writeData(filename,questions);
         return answers;
     }
 }
