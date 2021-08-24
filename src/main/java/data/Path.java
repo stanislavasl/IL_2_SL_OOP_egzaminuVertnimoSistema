@@ -1,14 +1,14 @@
 package data;
 
 public enum Path {
-    CORRECT_ANSWERS("src/files/correct_answers/ca"),
-    QUESTIONS("src/files/questions/qs"),
-    RESULTS("src/files/results/res"),
-    STUDENT_ANSWERS("src/files/student_answers/sa"),
-    STUDENTS("src/files/users/students.json"),
-    TEACHERS("src/files/users/teachers.json"),
-    LITS_OF_ALL_RESULTS("src/files/listOfResults.json"),
-    LIST_OF_EXAMS("src/files/listOfExams.json");
+    CORRECT_ANSWERS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/correct_answers/ca"),
+    QUESTIONS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/questions/qs"),
+    RESULTS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/results/res"),
+    STUDENT_ANSWERS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/student_answers/sa"),
+    STUDENTS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/users/students.json"),
+    TEACHERS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/users/teachers.json"),
+    LITS_OF_ALL_RESULTS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/listOfResults.json"),
+    LIST_OF_EXAMS("C:/Users/stanislavas/IdeaProjects/IL_2_SL_OOP_egzaminuVertnimoSistema/src/files/listOfExams.json");
 
     private final String cataloque;
 

@@ -7,10 +7,7 @@ import data.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FileService {
 
@@ -125,6 +122,23 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getCorrectValue() {
+        Scanner sc = new Scanner(System.in);
+        Exceptions ex = new Exceptions();
+        String value;
+        while(true) {
+            try {
+                System.out.println("iveskite reiksme:");
+                value = sc.nextLine();
+                ex.checkValue(value);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Value is empty or contains invalid characters! Please enter another one.");
+            }
+        }
+        return value;
     }
 
 }

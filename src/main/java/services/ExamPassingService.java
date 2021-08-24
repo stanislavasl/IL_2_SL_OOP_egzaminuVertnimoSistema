@@ -19,7 +19,7 @@ public class ExamPassingService {
         List<ExamInfo> listOfExams = getListOfExams();
         System.out.println();
         System.out.println("Please select exam from list and enter exam ID:");
-        String examId = sc.nextLine();
+        String examId = fs.getCorrectValue();
         listOfExams.forEach(e -> {if(e.getId().equals(examId)){
             fillTheAnswers(e.getTitle(), e.getType(), examId, userId);
         }});
@@ -43,7 +43,7 @@ public class ExamPassingService {
         for (int i = 1; i <= questions.size(); i++) {
             System.out.println("Question Nr." + i + ": " + questions.get(Integer.toString(i)));
             System.out.println("Your answer: ");
-            String answer = sc.nextLine();
+            String answer = fs.getCorrectValue();
             answers.put(Integer.toString(i), answer);
             if (answers.get(Integer.toString(i)).equals(exam.getAnswers().get(Integer.toString(i)))){
                 grade += valueOfOneAnswer;

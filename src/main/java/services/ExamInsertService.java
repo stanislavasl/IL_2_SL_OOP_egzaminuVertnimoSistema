@@ -45,7 +45,7 @@ public class ExamInsertService {
         String text = "Please insert new exam ID";
         do {
             System.out.println(text);
-            newExamId = sc.nextLine();
+            newExamId = fs.getCorrectValue();
             for(ExamInfo e : list){
                 if (!e.getId().equals(newExamId)){
                     tag = false;
@@ -58,9 +58,9 @@ public class ExamInsertService {
 
     private ExamInfo infoAboutNewExam(String newExamId) {
         System.out.println("Please insert exam title:");
-        String examTitle = sc.nextLine();
+        String examTitle = fs.getCorrectValue();
         System.out.println("Please insert exam type");
-        String examType = sc.nextLine();
+        String examType = fs.getCorrectValue();
         LocalDateTime dateAndTime = LocalDateTime.now();
         String dt = dateAndTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         return new ExamInfo(newExamId, examTitle, examType, dt);
@@ -70,14 +70,14 @@ public class ExamInsertService {
         Map<String, String> questions = new HashMap<>();
         Map<String, String> answers = new HashMap<>();
         System.out.println("Please insert how much questions will the exam have:");
-        String numbOfQuestions = sc.nextLine();
+        String numbOfQuestions = fs.getCorrectValue();
         int n = Integer.parseInt(numbOfQuestions);
         for (int i = 1; i <= n; i++) {
             System.out.println("Please enter " + i + " question:");
-            String question = sc.nextLine();
+            String question = fs.getCorrectValue();
             questions.put(Integer.toString(i), question);
             System.out.println("Please, insert the answer to the " + i + " question: ");
-            String answer = sc.nextLine();
+            String answer = fs.getCorrectValue();
             answers.put(Integer.toString(i), answer);
         }
         fs.writeData(filename,questions);

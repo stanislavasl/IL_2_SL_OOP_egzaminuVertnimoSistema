@@ -29,9 +29,9 @@ public class LoginService {
         String userID = getUniqueUserID(filename);
         String password = getCorrectPassword();
         System.out.println("*** Insert your name ***");
-        String name = sc.nextLine();
+        String name = fs.getCorrectValue();
         System.out.println("** Insert your surname ***");
-        String surname = sc.nextLine();
+        String surname = fs.getCorrectValue();
 
         Map<String, Person> persons = new HashMap<>();
         persons = fs.readData(filename, persons);
@@ -54,9 +54,9 @@ public class LoginService {
         }
         System.out.println("*** User login ***");
         System.out.println("Insert user ID");
-        String userID = sc.nextLine();
+        String userID = fs.getCorrectValue();
         System.out.println("Insert password");
-        String password = sc.nextLine();
+        String password = fs.getCorrectValue();
 
         Map<String, Person> persons = fs.readUserFromFile(filename);
         String encodedPassword = persons.get(userID).getPassword();
@@ -78,9 +78,9 @@ public class LoginService {
         do {
             System.out.println(text);
             System.out.println("Please insert password");
-            password = sc.nextLine();
+            password = fs.getCorrectValue();
             System.out.println("Repeat you password");
-            repeatPassword = sc.nextLine();
+            repeatPassword = fs.getCorrectValue();
             text = "Passwords not equals";
         } while(!password.equals(repeatPassword));
 
@@ -94,7 +94,7 @@ public class LoginService {
         String text = "Please insert user ID";
         do {
             System.out.println(text);
-            userID = sc.nextLine();
+            userID = fs.getCorrectValue();
             text = "This name exist please insert another one";
         } while(/*fs.readUserFromFile(filename)*/list.get(userID) != null);
         return userID;
