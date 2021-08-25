@@ -96,7 +96,7 @@ public class LoginService {
             System.out.println(text);
             userID = fs.getCorrectValue();
             text = "This name exist please insert another one";
-        } while(/*fs.readUserFromFile(filename)*/list.get(userID) != null);
+        } while(list.get(userID) != null);
         return userID;
     }
 
