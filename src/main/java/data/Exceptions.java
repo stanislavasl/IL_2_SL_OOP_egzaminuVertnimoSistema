@@ -10,6 +10,5 @@ public class Exceptions {
                 throw new IllegalArgumentException();
             }
         }
-        System.out.println("Good");
     }
 }

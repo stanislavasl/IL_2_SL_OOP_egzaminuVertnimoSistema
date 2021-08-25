@@ -7,11 +7,9 @@ import java.util.*;
 
 public class ExamPassingService {
 
-    private final Scanner sc;
     private final FileService fs;
 
-    public ExamPassingService(Scanner sc, FileService fs) {
-        this.sc = sc;
+    public ExamPassingService(FileService fs) {
         this.fs = fs;
     }
 
@@ -41,33 +39,47 @@ public class ExamPassingService {
         float grade = 0;
 
         for (int i = 1; i <= questions.size(); i++) {
-            System.out.println("Question Nr." + i + ": " + questions.get(Integer.toString(i)));
+            System.out.println("Question Nr." + i + ": " + questions.get("question Nr." + i));
             System.out.println("Your answer: ");
             String answer = fs.getCorrectValue();
-            answers.put(Integer.toString(i), answer);
-            if (answers.get(Integer.toString(i)).equals(exam.getAnswers().get(Integer.toString(i)))){
+            answers.put("question Nr." + i, answer);
+            if (answers.get("question Nr." + i).equals(exam.getAnswers().get("question Nr." + i))){
                 grade += valueOfOneAnswer;
             }
         }
+        writeExamResults(examTitle, examId, studentAnswersFilename, student, answers, exam, grade);
+    }
 
+
+    public void writeExamResults(String examTitle, String examId, String studentAnswersFilename, Person student, Map<String, String> answers, Exam exam, float grade) {
         Result result = new Result(student, exam.getExamInfo(), answers);
         fs.writeData(studentAnswersFilename, result);
 
-        List<ShortResultsInfo> resultsList = new ArrayList<>();
-        List<ShortExamResults> exams = fs.readAllResultsFromFile(Path.LITS_OF_ALL_RESULTS.getCataloque());
-        for (ShortExamResults e : exams) {
-            if (e.getExamId().equals(examId)){
-                resultsList = e.getStudentsResults();
+        List<ShortResultsInfo> listOfStudentResultsOfParticularExam = new ArrayList<>();
+        List<ShortExamResults> listOfAllExamsPassed = fs.readAllResultsFromFile(Path.LITS_OF_ALL_RESULTS.getCataloque());
+        int position = 0;
+        boolean searchResult = true;
+        if (!listOfAllExamsPassed.isEmpty()) {
+            for (ShortExamResults particularExam : listOfAllExamsPassed) {
+                if (particularExam.getExamId().equals(examId)) {
+                    listOfStudentResultsOfParticularExam = particularExam.getStudentsResults();
+                    position = listOfAllExamsPassed.indexOf(particularExam);
+                } else {
+                    searchResult = false;
+                }
             }
         }
-        ShortResultsInfo shortResultsInfo = new ShortResultsInfo(student.getId(), student.getName(), student.getSurname(), grade);
-        resultsList.add(shortResultsInfo);
-        ShortExamResults shortExamResults = new ShortExamResults(examId, examTitle, resultsList);
-        exams.add(shortExamResults);
-        fs.writeData(Path.LITS_OF_ALL_RESULTS.getCataloque(), exams);
-
-
+        ShortResultsInfo resultOfStudentPassedExam = new ShortResultsInfo(student.getId(), student.getName(), student.getSurname(), Math.round(grade));
+        listOfStudentResultsOfParticularExam.add(resultOfStudentPassedExam);
+        if (searchResult == false || listOfAllExamsPassed.isEmpty()) {
+            ShortExamResults particularExamWithAllResults = new ShortExamResults(examId, examTitle, listOfStudentResultsOfParticularExam);
+            listOfAllExamsPassed.add(particularExamWithAllResults);
+        } else {
+            listOfAllExamsPassed.get(position).setStudentsResults(listOfStudentResultsOfParticularExam);
+        }
+        fs.writeData(Path.LITS_OF_ALL_RESULTS.getCataloque(), listOfAllExamsPassed);
     }
+
 
     public List<ExamInfo> getListOfExams() {
         String filename = Path.LIST_OF_EXAMS.getCataloque();

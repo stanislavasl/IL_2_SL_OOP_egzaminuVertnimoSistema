@@ -10,11 +10,9 @@ import java.util.*;
 
 public class ExamInsertService {
 
-    private Scanner sc;
-    private FileService fs;
+    private final FileService fs;
 
-    public ExamInsertService(Scanner sc, FileService fs) {
-        this.sc = sc;
+    public ExamInsertService(FileService fs) {
         this.fs = fs;
     }
 
@@ -26,7 +24,6 @@ public class ExamInsertService {
         List<ExamInfo> listOfExams = fs.readExamDataFromFile(listOfExamsFilename);
         listOfExams.add(examInfo);
         fs.writeData(listOfExamsFilename, listOfExams);
-
 
         String answersFilename = fs.createFilename("ca", examInfo.getId(),  examInfo.getTitle(), examInfo.getType(), null);
         String questionsFilename = fs.createFilename("qs", examInfo.getId(),  examInfo.getTitle(),examInfo.getType(), null);
@@ -75,10 +72,10 @@ public class ExamInsertService {
         for (int i = 1; i <= n; i++) {
             System.out.println("Please enter " + i + " question:");
             String question = fs.getCorrectValue();
-            questions.put(Integer.toString(i), question);
+            questions.put("question Nr." + i, question);
             System.out.println("Please, insert the answer to the " + i + " question: ");
             String answer = fs.getCorrectValue();
-            answers.put(Integer.toString(i), answer);
+            answers.put("question Nr." + i, answer);
         }
         fs.writeData(filename,questions);
         return answers;

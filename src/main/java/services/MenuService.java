@@ -1,12 +1,10 @@
 package services;
 
-import data.Path;
-
 import java.util.Scanner;
 
 public class MenuService {
 
-    private Scanner sc;
+    private final Scanner sc;
 
     public MenuService(Scanner sc) {
         this.sc = sc;
@@ -58,13 +56,13 @@ public class MenuService {
     }
 
     protected void studentWorkMenu(String userId) {
-        ExamPassingService exam = new ExamPassingService(new Scanner(System.in), new FileService());
+        ExamPassingService exam = new ExamPassingService(new FileService());
         boolean isLoading = true;
         while (isLoading) {
             System.out.println(" ___________________________________");
             System.out.println("|*  Welcome to student work menu   *|");
             System.out.println("| 1 - Passing the exam              |");
-            System.out.println("| 2 - Supplement existing exams     |");
+            System.out.println("| 2 - Correct passed exam           |");
             System.out.println("| 3 - Back to login menu            |");
             System.out.println("| 4 - Exit                          |");
             System.out.println("|___________________________________|");
@@ -81,13 +79,13 @@ public class MenuService {
     }
 
     protected void teacherWorkMenu(String userId) {
-        ExamInsertService exam = new ExamInsertService(new Scanner(System.in), new FileService());
+        ExamInsertService exam = new ExamInsertService(new FileService());
         boolean isLoading = true;
         while (isLoading) {
             System.out.println(" ___________________________________");
             System.out.println("|*  Welcome to teacher work menu   *|");
             System.out.println("| 1 - Create new exam data          |");
-            System.out.println("| 2 - Supplement existing exams     |");
+            System.out.println("| 2 - Correct existing exam         |");
             System.out.println("| 3 - Back to login menu            |");
             System.out.println("| 4 - Exit                          |");
             System.out.println("|___________________________________|");

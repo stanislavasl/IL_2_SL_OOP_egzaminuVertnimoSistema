@@ -15,6 +15,11 @@ public class ShortExamResults {
         this.studentsResults = studentsResults;
     }
 
+    public ShortExamResults(String examId, String title) {
+        this.examId = examId;
+        this.title = title;
+    }
+
     public String getExamId() {
         return examId;
     }

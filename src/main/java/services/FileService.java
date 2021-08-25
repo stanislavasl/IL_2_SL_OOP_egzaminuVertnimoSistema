@@ -16,7 +16,7 @@ public class FileService {
         switch (appendix) {
             case "ca" -> filename = Path.CORRECT_ANSWERS.getCataloque() + "_" + examId + "_" + type + "_" + title + ".json";
             case "qs" -> filename = Path.QUESTIONS.getCataloque() + "_" + examId + "_" + type + "_" + title + ".json";
-            case "sa" -> filename = Path.STUDENT_ANSWERS.getCataloque() + "_" + examId + "_" + type + "_" + title + studentId +".json";
+            case "sa" -> filename = Path.STUDENT_ANSWERS.getCataloque() + "_" + examId + "_" + type + "_" + title + "_" + studentId +".json";
             case "rs" -> filename = Path.RESULTS.getCataloque() + "_" + examId + "_" + type + "_" + title + studentId +".json";
         }
 //        File file = createFile(filename);
@@ -130,7 +130,6 @@ public class FileService {
         String value;
         while(true) {
             try {
-                System.out.println("iveskite reiksme:");
                 value = sc.nextLine();
                 ex.checkValue(value);
                 break;
